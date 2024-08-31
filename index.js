@@ -27,8 +27,9 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    const coffeeCollection = client.db('coffeeDB').collection('coffee')
-    
+    const coffeeCollection = client.db('coffeeDB').collection('coffee');
+    const userCollection = client.db('coffeeDB').collection('user');
+
     // get or read method
     app.get('/coffee', async(req, res) =>{
       const cursor = coffeeCollection.find();
@@ -81,6 +82,14 @@ async function run() {
       const query = {_id: new ObjectId(id)};
       const result = await coffeeCollection.deleteOne(query);
       console.log(result)
+      res.send(result)
+    })
+
+    // User related APIS
+    app.post('/user', async(req, res) =>{
+      const user = req.body;
+      console.log(user);
+      const result = await userCollection.insertOne(user)
       res.send(result)
     })
 
